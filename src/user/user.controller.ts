@@ -10,7 +10,10 @@ export class UserController {
   async create(
     @Body() body: { email: string; password: string },
   ): Promise<User> {
-    return this.userService.createUser(body.email, body.password);
+    return this.userService.createUser({
+      email: body.email,
+      password: body.password,
+    });
   }
 
   // Additional endpoints can be added here (e.g., get, update, delete)
