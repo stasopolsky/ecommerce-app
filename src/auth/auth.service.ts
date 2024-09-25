@@ -6,13 +6,33 @@ import * as bcrypt from 'bcrypt'; // Make sure to install bcrypt
 import { CreateUserDto } from './dto/create-user.dto';
 // import * as crypto from 'crypto'; // For generating reset token
 import * as nodemailer from 'nodemailer'; // For sending emails
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
+
+  //   constructor(private configService: ConfigService) {}
+
+  getGoogleClientId(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_ID');
+  }
+
+  getGoogleClientSecret(): string {
+    return this.configService.get<string>('GOOGLE_CLIENT_SECRET');
+  }
+
+  getFacebookAppId(): string {
+    return this.configService.get<string>('FACEBOOK_APP_ID');
+  }
+
+  getFacebookAppSecret(): string {
+    return this.configService.get<string>('FACEBOOK_APP_SECRET');
+  }
 
   async validateUser(
     email: string,

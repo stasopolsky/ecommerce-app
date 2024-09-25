@@ -5,17 +5,19 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './jwt.strategy'; // Import the JWT strategy
+import { FacebookStrategy } from './facebook.strategy';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PassportModule,
     JwtModule.register({
       secret: 'your_secret_key', // Ensure this matches the secret in your JwtStrategy
       signOptions: { expiresIn: '1h' }, // Token expiration time
     }),
     UserModule,
   ],
-  providers: [AuthService, JwtStrategy], // Add JwtStrategy here
+  providers: [AuthService, GoogleStrategy, FacebookStrategy, JwtStrategy], // Add JwtStrategy here
   controllers: [AuthController],
   exports: [PassportModule, AuthService],
 })
