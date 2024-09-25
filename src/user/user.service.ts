@@ -16,5 +16,39 @@ export class UserService {
     });
   }
 
+  //   async getUserByToken(token: string): Promise<User | null> {
+  //     return this.prisma.user.findUnique({
+  //       where: { resetToken: token },
+  //     });
+  //   }
+  async savePasswordResetToken(email: string, token: string, expires: Date) {
+    return this.prisma.user.update({
+      where: { email: email },
+      data: {
+        resetToken: token,
+        resetTokenExpires: expires,
+      },
+    });
+  }
+
+  async findOneByResetToken(token: string): Promise<User | null> {
+    return this.prisma.user.findFirst({
+      where: {
+        resetToken: token,
+        resetTokenExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+  }
+
+  // Update user's password (replace with actual database logic)
+  async updatePassword(userId: number, hashedPassword: string) {
+    // Example logic, replace with actual DB update
+    return await this.prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+  }
   // Additional user methods can be added here (update, delete, etc.)
 }

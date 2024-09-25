@@ -6,10 +6,12 @@ import {
   UseGuards,
   Get,
   Request,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 // import { User } from '@prisma/client';
 
 @Controller('auth')
@@ -34,5 +36,21 @@ export class AuthController {
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
+  }
+
+  @Post('password-reset-request')
+  async requestPasswordReset(
+    @Body() requestPasswordResetDto: RequestPasswordResetDto,
+  ) {
+    return this.authService.requestPasswordReset(requestPasswordResetDto.email);
+  }
+
+  @Post('reset-password/:token')
+  async resetPassword(
+    @Param('token') token: string,
+    @Body('password') newPassword: string,
+  ) {
+    // console.log('Received token:', token);
+    return await this.authService.resetPassword(token, newPassword);
   }
 }

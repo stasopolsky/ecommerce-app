@@ -11,12 +11,12 @@ import { JwtStrategy } from './jwt.strategy'; // Import the JWT strategy
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'your_secret_key', // Ensure this matches the secret in your JwtStrategy
-      signOptions: { expiresIn: '60s' }, // Token expiration time
+      signOptions: { expiresIn: '1h' }, // Token expiration time
     }),
     UserModule,
   ],
   providers: [AuthService, JwtStrategy], // Add JwtStrategy here
   controllers: [AuthController],
-  exports: [PassportModule],
+  exports: [PassportModule, AuthService],
 })
 export class AuthModule {}
