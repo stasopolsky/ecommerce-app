@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthService } from './auth.service'; // Adjust the path as necessary
+import { AuthService } from '../auth.service'; // Adjust the path as necessary
 import { User } from '@prisma/client'; // Adjust according to your user model
 
 @Injectable()

@@ -66,11 +66,32 @@ export class AuthController {
 
   @Get('facebook/callback')
   @UseGuards(AuthGuard('facebook'))
-  facebookAuthRedirect(@Req() req) {
-    return {
-      message: 'User information from Facebook',
-      user: req.user,
-    };
+  async facebookAuthRedirect(@Req() req) {
+    const token = await this.authService.login(req.user);
+    return token;
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleLogin(@Req() req) {
+    // Initiates the Google authentication process
+  }
+
+  @Get('google/redirect') // Change this line
+  @UseGuards(AuthGuard('google'))
+  async googleLoginCallback(@Req() req, @Res() res) {
+    const token = await this.authService.login(req.user);
+    res.redirect('http://localhost:3000/auth/profile');
+    // Successful authentication, redirect or send response
+    // const user = req.user;
+    // const token = this.login(req.user);
+    // console.log(req.user);
+    // const user = await this.authService.validateUser(req.user?.email);
+    // if (!user) {
+    //   throw new UnauthorizedException();
+    // }
+    console.log(token);
+    return token;
   }
 
   @Get('logout')
@@ -82,20 +103,5 @@ export class AuthController {
       }
       res.redirect('/'); // Redirect to home or login page
     });
-  }
-
-  @Get('google')
-  @UseGuards(AuthGuard('google'))
-  async googleLogin(@Req() req) {
-    // Initiates the Google authentication process
-  }
-
-  @Get('google/redirect') // Change this line
-  @UseGuards(AuthGuard('google'))
-  googleLoginCallback(@Req() req, @Res() res) {
-    // Successful authentication, redirect or send response
-    const user = req.user;
-    // Here you can issue a JWT or set up a session, then redirect to a frontend route
-    res.json({ message: 'Login successful', user });
   }
 }

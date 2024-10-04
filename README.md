@@ -1,73 +1,84 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+ecommerce-app/
+│
+├── src/
+│ ├── auth/ # Authentication Module
+│ │ ├── auth.controller.ts # Authentication routes (login, register, password reset, etc.)
+│ │ ├── auth.module.ts # Auth module configuration
+│ │ ├── auth.service.ts # Auth service (business logic)
+│ │ ├── jwt.strategy.ts # JWT strategy for token-based auth
+│ │ ├── google.strategy.ts # Google OAuth strategy
+│ │ ├── facebook.strategy.ts # Facebook OAuth strategy
+│ │ └── dto/ # Auth-related Data Transfer Objects
+│ │ ├── login.dto.ts
+│ │ ├── register.dto.ts
+│ │ └── reset-password.dto.ts
+│ │
+│ ├── users/ # Users Module
+│ │ ├── users.controller.ts # User routes (CRUD operations on users)
+│ │ ├── users.module.ts # User module configuration
+│ │ ├── users.service.ts # User service (business logic for users)
+│ │ ├── entities/ # Entities (Prisma Models or other DB models)
+│ │ └── user.entity.ts
+│ │ ├── dto/ # Data Transfer Objects for users
+│ │ ├── create-user.dto.ts
+│ │ ├── update-user.dto.ts
+│ │ └── user-profile.dto.ts
+│ │
+│ ├── products/ # Products Module
+│ │ ├── products.controller.ts # Product routes (CRUD for products)
+│ │ ├── products.module.ts # Product module configuration
+│ │ ├── products.service.ts # Product service (business logic for products)
+│ │ ├── entities/ # Product entities (Prisma or other DB models)
+│ │ └── product.entity.ts
+│ │ ├── dto/ # Data Transfer Objects for products
+│ │ ├── create-product.dto.ts
+│ │ ├── update-product.dto.ts
+│ │ └── product-filter.dto.ts
+│ │
+│ ├── orders/ # Orders Module
+│ │ ├── orders.controller.ts # Order routes (CRUD for orders)
+│ │ ├── orders.module.ts # Order module configuration
+│ │ ├── orders.service.ts # Order service (business logic for orders)
+│ │ ├── entities/ # Order entities (Prisma or other DB models)
+│ │ └── order.entity.ts
+│ │ ├── dto/ # Data Transfer Objects for orders
+│ │ ├── create-order.dto.ts
+│ │ ├── update-order.dto.ts
+│ │ └── order-status.dto.ts
+│ │
+│ ├── prisma/ # Prisma Module
+│ │ ├── prisma.module.ts # Prisma module configuration
+│ │ ├── prisma.service.ts # Prisma service (Prisma client connection logic)
+│ │ └── seed.ts # Seed data (initial data population)
+│ │
+│ ├── config/ # Configuration Module
+│ │ ├── config.module.ts # Configuration module for managing environment variables
+│ │ └── config.service.ts # Service to access config values
+│ │
+│ ├── common/ # Shared module for utilities, interceptors, guards, etc.
+│ │ ├── interceptors/ # Interceptors like logging, error handling
+│ │ ├── decorators/ # Custom decorators
+│ │ ├── filters/ # Exception filters
+│ │ ├── guards/ # Guards for route protection
+│ │ └── utils/ # Utility functions
+│ │
+│ ├── app.module.ts # Root module
+│ ├── main.ts # Main entry point
+│ └── env/ # Environment variable files
+│ ├── .env # Local environment variables
+│ ├── .env.development # Development environment
+│ └── .env.production # Production environment
+│
+├── prisma/
+│ ├── schema.prisma # Prisma schema file for DB models
+│ └── migrations/ # Prisma migration files
+│
+├── test/ # Tests for the app
+│ ├── auth/ # Auth module tests
+│ ├── users/ # Users module tests
+│ └── e2e/ # End-to-end tests
+│
+├── package.json # Node.js dependencies
+├── tsconfig.json # TypeScript configuration
+├── .prettierrc # Prettier configuration for code formatting
+└── .eslintrc.js # ESLint configuration for linting

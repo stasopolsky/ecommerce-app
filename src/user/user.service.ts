@@ -16,11 +16,6 @@ export class UserService {
     });
   }
 
-  //   async getUserByToken(token: string): Promise<User | null> {
-  //     return this.prisma.user.findUnique({
-  //       where: { resetToken: token },
-  //     });
-  //   }
   async savePasswordResetToken(email: string, token: string, expires: Date) {
     return this.prisma.user.update({
       where: { email: email },
@@ -48,6 +43,13 @@ export class UserService {
     return await this.prisma.user.update({
       where: { id: userId },
       data: { password: hashedPassword },
+    });
+  }
+
+  async makeAdmin(userId: number) {
+    return this.prisma.user.update({
+      where: { id: userId },
+      data: { role: 'ADMIN' },
     });
   }
   // Additional user methods can be added here (update, delete, etc.)

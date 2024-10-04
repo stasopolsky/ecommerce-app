@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service'; // Import your UserService
 import { User } from '@prisma/client'; // Import User type from Prisma
@@ -16,36 +20,21 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  //   constructor(private configService: ConfigService) {}
-
-  getGoogleClientId(): string {
-    return this.configService.get<string>('GOOGLE_CLIENT_ID');
-  }
-
-  getGoogleClientSecret(): string {
-    return this.configService.get<string>('GOOGLE_CLIENT_SECRET');
-  }
-
-  getFacebookAppId(): string {
-    return this.configService.get<string>('FACEBOOK_APP_ID');
-  }
-
-  getFacebookAppSecret(): string {
-    return this.configService.get<string>('FACEBOOK_APP_SECRET');
-  }
-
   async validateUser(
     email: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    password: string,
+    password?: string,
   ): Promise<User | null> {
     const user = await this.userService.getUserByEmail(email);
+
+    if (!user) throw new UnauthorizedException('Please log in to continue');
+
     // Add your password validation logic here (e.g., bcrypt)
     return user;
   }
 
   async login(user: User) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, role: user.role };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -69,30 +58,12 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    // console.log(user);
-    // You can choose to automatically log them in or just return a success message
-    // return { message: 'User registered successfully' };
-    return { user };
-  }
-
-  async generateResetToken(email: string) {
-    const token = this.jwtService.sign(
-      { email }, // The payload contains the user's email
-      {
-        secret: 'your_secret_key', // The signing secret
-        expiresIn: '1h', // Token expires in 1 hour
-      },
-    );
-
-    return token;
+    return {
+      access_token: this.jwtService.sign(createUserDto),
+    };
   }
 
   async requestPasswordReset(email: string) {
-    // const token = this.jwtService.sign(
-    //   { email },
-    //   { secret: 'your_secret_key', expiresIn: '1h' },
-    // );
-
     const user = await this.userService.getUserByEmail(email);
     if (!user) {
       throw new Error('User not found');
@@ -148,14 +119,6 @@ export class AuthService {
   async resetPassword(token: string, newPassword: string) {
     console.log('Received token:', token);
     const payload = this.verifyToken(token);
-    console.log(payload);
-    // const isValidToken = this.verifyToken(token);
-    console.log('isValidToken:', token);
-    // if (!isValidToken) {
-    //   throw new BadRequestException('Invalid or expired token');
-    // }
-
-    // Verify and decode the token
     const user = await this.userService.getUserByEmail(payload.email); // Find user by email (replace with your logic)
 
     if (!user) {
@@ -178,9 +141,6 @@ export class AuthService {
       });
       console.log(decoded);
       return decoded;
-      //   return this.jwtService.verify(token, {
-      //     secret: 'your_secret_key', // Ensure this matches the secret used to sign the token
-      //   });
     } catch (err) {
       throw new BadRequestException('Invalid1 or expired token');
     }
@@ -199,10 +159,4 @@ export class AuthService {
     const saltRounds = 10;
     return await bcrypt.hash(password, saltRounds);
   }
-
-  //   // Simulate finding a user by token
-  //   async findUserByToken(token: string) {
-  //     // Replace with actual database lookup logic
-  //     return { id: 1, email: 'test@example.com' };
-  //   }
 }
