@@ -11,6 +11,7 @@ import {
   Param,
   Req,
   Res,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -18,11 +19,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
 // import { User } from '@prisma/client';
 import { Request as Req1, Response as Res1 } from 'express';
+import { HttpExceptionFilter } from 'src/common/exceptions/exception.filter';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('profile')
+  @UseFilters(new HttpExceptionFilter())
   @UseGuards(AuthGuard('jwt')) // Protect this route with JWT guard
   getProfile(@Request() req) {
     return req.user; // Returns the authenticated user details

@@ -53,7 +53,7 @@ export class AuthService {
     const hashedPassword = (await bcrypt.hash(password, 10)) as string;
 
     // Create and save the new user
-    const user = await this.userService.createUser({
+    await this.userService.createUser({
       email,
       password: hashedPassword,
     });
@@ -117,7 +117,7 @@ export class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string) {
-    console.log('Received token:', token);
+    // console.log('Received token:', token);
     const payload = this.verifyToken(token);
     const user = await this.userService.getUserByEmail(payload.email); // Find user by email (replace with your logic)
 
